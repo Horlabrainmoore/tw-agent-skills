@@ -1,6 +1,6 @@
 # Trust Wallet Agent Skills
 
-AI agent skills for Trust Wallet APIs — wallet management, token transfers, swaps, DCA, limit orders, price alerts, balances, market data, history, security, and fiat on/off-ramp — across **100+ chains**.
+AI agent skills for Trust Wallet APIs and open-source libraries — swaps, market data, security, fiat on/off-ramp, wallet-core, Web3 provider, assets, and smart contract wallets — across **100+ chains**.
 
 ## Install
 
@@ -70,51 +70,43 @@ See the [setup skill](skills/setup/SKILL.md) for the full HMAC-SHA256 signing al
 
 | Skill | Actions | Description |
 |-------|---------|-------------|
-| [`setup`](skills/setup/SKILL.md) | — | Authentication (HMAC-SHA256), wallet password, base URLs, 100+ supported chains |
-| [`wallet`](skills/wallet/SKILL.md) | 5 | Create wallet, get addresses, check balances, WalletConnect |
-| [`balance`](skills/balance/SKILL.md) | 4 | Native balance, token holdings, asset search, asset info |
-| [`transfer`](skills/transfer/SKILL.md) | 3 | Token transfers with ENS resolution, ERC-20 approvals, allowances |
-| [`swap-quote`](skills/swap-quote/SKILL.md) | 4 | Swap quotes, step transactions, providers, and domains via Amber |
+| [`setup`](skills/setup/SKILL.md) | — | Authentication (HMAC-SHA256), base URLs, 100+ supported chains |
+| [`token-info`](skills/token-info/SKILL.md) | 3 | Token search, asset details, and coin status |
+| [`swap-quote`](skills/swap-quote/SKILL.md) | 6 | Swap quotes, step transactions, providers, and domains via Amber |
 | [`market-data`](skills/market-data/SKILL.md) | 3 | Token prices (CMC + CoinGecko index), trending listings by 16+ categories |
-| [`history`](skills/history/SKILL.md) | 2 | Transaction history and details |
 | [`security`](skills/security/SKILL.md) | 2 | Address validation and token risk analysis |
-| [`onramp`](skills/onramp/SKILL.md) | 4 | Fiat buy/sell quotes and checkout URLs |
-| [`alerts`](skills/alerts/SKILL.md) | 4 | Price alerts with above/below conditions |
-| [`automations`](skills/automations/SKILL.md) | 4 | DCA recurring buys and limit orders |
+| | | |
+| [`wallet-core`](skills/wallet-core/SKILL.md) | — | HD wallet creation, address derivation, and transaction signing across 140+ blockchains |
+| [`trust-web3-provider`](skills/trust-web3-provider/SKILL.md) | — | Web3 provider library for Ethereum, Solana, Cosmos, Bitcoin, Aptos, TON, Tron |
+| [`trust-developer`](skills/trust-developer/SKILL.md) | — | Deep links, browser extension detection, and WalletConnect integration |
+| [`assets`](skills/assets/SKILL.md) | — | Token logos and metadata for thousands of tokens across 180+ blockchains |
+| [`barz`](skills/barz/SKILL.md) | — | Modular ERC-4337 smart contract wallet (Diamond proxy pattern) |
 
-**35 actions** across 11 skills covering 100+ supported chains.
+**14 actions** across 10 skills covering 100+ supported chains.
 
 ## Workflow
 
 Skills build on each other:
 
 ```
-setup → wallet → balance → transfer
-                        → swap-quote → automations (DCA / limit orders)
-                        → market-data → alerts
-                        → history
-                        → security
-                        → onramp
+setup → token-info
+      → swap-quote
+      → market-data
+      → security
 ```
 
-1. Start with `setup` to understand authentication and wallet password
-2. Use `wallet` to create or connect a wallet and get addresses
-3. Use `balance` to check wallet holdings
-4. Use `market-data` for prices and token discovery
-5. Use `security` to validate addresses and check token risk before transacting
-6. Use `swap-quote` to get quotes and transaction data
-7. Use `transfer` to send tokens or manage approvals
-8. Use `alerts` to set price notifications
-9. Use `automations` to set up DCA or limit orders
-10. Use `onramp` for fiat buy/sell flows
+1. Start with `setup` to understand authentication
+2. Use `market-data` for prices and token discovery
+3. Use `security` to validate addresses and check token risk before transacting
+4. Use `swap-quote` to get quotes and transaction data
 
 ## Base URLs
 
 | Base URL | Auth | Purpose |
 |----------|------|---------|
-| `https://gateway.us.trustwallet.com` | HMAC-SHA256 | Balance, assets, security, history, on/off-ramp, market listings |
-| `https://api.trustwallet.com` | HMAC-SHA256 | Swap quotes, transactions, providers, domains (Amber) |
-| `https://market.trustwallet.com` | None | Token prices (index from CoinMarketCap + CoinGecko) |
+| `https://tws.trustwallet.com` | HMAC-SHA256 | Token prices, security, swap quotes, on/off-ramp, market listings, assets |
+
+> **Rate limit:** Free tier is limited to **1 request per second**. Exceeding this returns `429 Too Many Requests`.
 
 ## Asset ID Format
 
@@ -156,7 +148,6 @@ See the [swap-quote skill](skills/swap-quote/SKILL.md) for per-chain provider av
 
 These skills document the Trust Wallet agent APIs. The following are out of scope:
 
-- Raw private key management (the agent wallet handles this securely)
 - Custom smart contract deployment
 - NFT-specific operations
 
