@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Trust Wallet API authentication — HMAC-SHA256 signing, API keys, base URLs, and the full list of 100+ supported chains. Read this first before using any other skill.
+description: Trust Wallet API authentication — HMAC-SHA256 signing, API keys, base URLs, asset ID format, and the full list of 100+ supported chains. Read this first before using any other skill.
 ---
 
 # Setup — Authentication & Configuration
@@ -16,13 +16,15 @@ Register at [portal.trustwallet.com](https://portal.trustwallet.com) to obtain:
 
 | Base URL | Auth | Used By |
 |----------|------|---------|
-| `https://gateway.us.trustwallet.com` | HMAC-SHA256 | Balance, assets, security, history, on/off-ramp, market listings |
-| `https://api.trustwallet.com` | HMAC-SHA256 | Swap quotes, step transactions, providers, domains (Amber API) |
-| `https://market.trustwallet.com` | None (public) | Token prices / market tickers (index from CMC + CoinGecko) |
+| `https://tws.trustwallet.com` | HMAC-SHA256 | Token prices, security, swap quotes, on/off-ramp, market listings, assets |
+
+## Rate Limits
+
+The free tier is limited to **1 request per second** across all authenticated endpoints. Exceeding this returns `429 Too Many Requests`. Space sequential API calls at least 1 second apart.
 
 ## HMAC-SHA256 Signing
 
-Every request to `gateway` and `api` base URLs must include four headers computed from the request.
+Every request to the `tws.trustwallet.com` base URL must include four headers computed from the request.
 
 ### Required Headers
 
@@ -142,28 +144,6 @@ def sign_request(method, path, query, access_id, hmac_secret):
         'Content-Type': 'application/json',
     }
 ```
-
-## CLI Wallet Password
-
-MCP tools that access the agent wallet (`get_address`, `wallet_balance`, `transfer_token`, `swap`, etc.) require a `password` parameter to decrypt the wallet mnemonic stored at `~/.tw-agent/wallet.json`.
-
-The password is resolved in this priority order:
-
-1. **`password` parameter** — passed directly in the tool call
-2. **`TWAK_WALLET_PASSWORD` environment variable** — for CI / headless environments
-3. **OS Keychain** — stored automatically when the wallet is created (service: `tw-agent`, account: `wallet`)
-
-### Creating a wallet
-
-```bash
-tw-agent wallet create --password <your-password>
-```
-
-The password is saved to the OS keychain by default. Use `--no-keychain` to skip keychain storage.
-
-### Encryption
-
-The wallet mnemonic is encrypted with **AES-256-GCM** using PBKDF2 key derivation (600,000 iterations, SHA-256). The plaintext mnemonic is never stored on disk.
 
 ## Asset ID Format
 
