@@ -1,106 +1,156 @@
-# tw-agent-skills
+# Trust Wallet Agent Skills
 
-> **Note:** This repository contains Trust Wallet's open source skills for Claude Code. For information about the Agent Skills standard, see [agentskills.io](http://agentskills.io).
+AI agent skills for Trust Wallet APIs and open-source libraries — swaps, market data, security, fiat on/off-ramp, wallet-core, Web3 provider, assets, and smart contract wallets — across **100+ chains**.
 
-Skills are folders of instructions and references that Claude loads to improve performance on specialized tasks. These skills teach Claude how to work with Trust Wallet's libraries and developer platform in a repeatable, accurate way.
+## Install
 
-For more information, check out:
-- [What are skills?](https://support.claude.com/en/articles/12512176-what-are-skills)
-- [Using skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude)
-- [How to create custom skills](https://support.claude.com/en/articles/12512198-creating-custom-skills)
-
-# About This Repository
-
-This repository contains skills for building with Trust Wallet's open source projects — Web3 providers, wallet signing, smart contract wallets, token assets, and the developer platform.
-
-Each skill is self-contained in its own folder with a `SKILL.md` file. Browse through to understand the patterns or contribute new skills.
-
-# Skill Sets
-
-- [./skills](./skills) — Trust Wallet developer skills
-- [./spec](./spec) — Agent Skills specification
-- [./template](./template) — Skill template
-
-# Try in Claude Code
-
-## Installation
-
-Register this repository as a Claude Code plugin marketplace:
-
-```
-/plugin marketplace add trustwallet/tw-agent-skills
+```bash
+npx skills add trustwallet/tw-agent-skills
 ```
 
-## Installing Skills
+This auto-detects your coding agent. To install for a specific agent:
 
-Install the web3-skills plugin (all Trust Wallet skills):
+```bash
+# Claude Code
+npx skills add trustwallet/tw-agent-skills -a claude-code
 
-```
-/plugin install web3-skills@tw-agent-skills
-```
+# Cursor
+npx skills add trustwallet/tw-agent-skills -a cursor
 
-Or browse and install interactively:
+# Codex CLI
+npx skills add trustwallet/tw-agent-skills -a codex
 
-1. Run `/plugin browse`
-2. Select `tw-agent-skills`
-3. Select `web3-skills`
-4. Select `Install now`
+# Windsurf
+npx skills add trustwallet/tw-agent-skills -a windsurf
 
-## Updating
+# GitHub Copilot
+npx skills add trustwallet/tw-agent-skills -a github-copilot
 
-```
-/plugin marketplace update tw-agent-skills
-/plugin install web3-skills@tw-agent-skills
-```
+# Cline
+npx skills add trustwallet/tw-agent-skills -a cline
 
-> **Note:** Restart Claude Code after installing or updating plugins.
+# OpenCode
+npx skills add trustwallet/tw-agent-skills -a opencode
 
-## Using Skills
+# Roo
+npx skills add trustwallet/tw-agent-skills -a roo
 
-After installing, mention the skill in your request:
-
-- "Use the trust-web3-provider skill to help me add Solana support"
-- "Use the wallet-core skill to implement transaction signing in Swift"
-- "Use the assets skill to check the logo CDN URL for USDC on Base"
-- "Use the barz skill to add a new facet to my smart contract wallet"
-- "Use the trust-developer skill to set up WalletConnect in my dApp"
-
-# Available Skills
-
-### web3-skills Plugin
-
-| Skill | Description |
-|-------|-------------|
-| **[trust-web3-provider](./skills/trust-web3-provider/SKILL.md)** | Integrate and build on Trust Wallet's Web3 provider library — Ethereum (EIP-1193), Solana (Wallet Standard), Cosmos (Keplr), Bitcoin, Aptos, TON, Tron |
-| **[wallet-core](./skills/wallet-core/SKILL.md)** | HD wallet creation, address derivation, and transaction signing across 140+ blockchains in Swift, Kotlin, TypeScript, and Go |
-| **[assets](./skills/assets/SKILL.md)** | Look up token logos and metadata, list assets by chain, use CDN URLs, and contribute new assets to trustwallet/assets |
-| **[barz](./skills/barz/SKILL.md)** | Build with and contribute to Barz — Trust Wallet's modular ERC-4337 smart contract wallet using the Diamond proxy pattern |
-| **[trust-developer](./skills/trust-developer/SKILL.md)** | Trust Wallet developer platform — deep links, browser extension detection, and WalletConnect integration |
-
-# Creating a Skill
-
-Skills are simple — a folder with a `SKILL.md` file containing YAML frontmatter and instructions:
-
-```markdown
----
-name: my-skill-name
-description: A clear description of what this skill does and when to use it
----
-
-# My Skill Name
-
-[Instructions for Claude to follow when this skill is active]
+# Any other supported agent
+npx skills add trustwallet/tw-agent-skills -a <agent-name>
 ```
 
-The frontmatter requires only two fields:
-- `name` — unique identifier (lowercase, hyphens for spaces)
-- `description` — what the skill does and **when Claude should activate it**
+Install a single skill:
 
-Copy `template/SKILL.md` as a starting point.
+```bash
+npx skills add trustwallet/tw-agent-skills -s swap-quote
+```
 
-## Contributing
+List available skills without installing:
 
-1. Fork this repo
-2. Add your skill to `skills/<your-skill>/SKILL.md`
-3. Add its path to `.claude-plugin/marketplace.json` under the `skills` array
-4. Open a PR
+```bash
+npx skills add trustwallet/tw-agent-skills -l
+```
+
+## Prerequisites
+
+You need Trust Wallet API credentials. Get them at [portal.trustwallet.com](https://portal.trustwallet.com).
+
+Set them as environment variables or in a `.env` file:
+
+```env
+TWAK_ACCESS_ID=your_access_id
+TWAK_HMAC_SECRET=your_hmac_secret
+```
+
+> **Security:** Add `.env` to `.gitignore`. Never commit credentials.
+
+See the [setup skill](skills/setup/SKILL.md) for the full HMAC-SHA256 signing algorithm with code examples in JavaScript and Python.
+
+## Skills
+
+| Skill | Actions | Description |
+|-------|---------|-------------|
+| [`setup`](skills/setup/SKILL.md) | — | Authentication (HMAC-SHA256), base URLs, 100+ supported chains |
+| [`token-info`](skills/token-info/SKILL.md) | 3 | Token search, asset details, and coin status |
+| [`swap-quote`](skills/swap-quote/SKILL.md) | 6 | Swap quotes, step transactions, providers, and domains via Amber |
+| [`market-data`](skills/market-data/SKILL.md) | 3 | Token prices (CMC + CoinGecko index), trending listings by 16+ categories |
+| [`security`](skills/security/SKILL.md) | 2 | Address validation and token risk analysis |
+| | | |
+| [`wallet-core`](skills/wallet-core/SKILL.md) | — | HD wallet creation, address derivation, and transaction signing across 140+ blockchains |
+| [`trust-web3-provider`](skills/trust-web3-provider/SKILL.md) | — | Web3 provider library for Ethereum, Solana, Cosmos, Bitcoin, Aptos, TON, Tron |
+| [`trust-developer`](skills/trust-developer/SKILL.md) | — | Deep links, browser extension detection, and WalletConnect integration |
+| [`assets`](skills/assets/SKILL.md) | — | Token logos and metadata for thousands of tokens across 180+ blockchains |
+| [`barz`](skills/barz/SKILL.md) | — | Modular ERC-4337 smart contract wallet (Diamond proxy pattern) |
+
+**14 actions** across 10 skills covering 100+ supported chains.
+
+## Workflow
+
+Skills build on each other:
+
+```
+setup → token-info
+      → swap-quote
+      → market-data
+      → security
+```
+
+1. Start with `setup` to understand authentication
+2. Use `market-data` for prices and token discovery
+3. Use `security` to validate addresses and check token risk before transacting
+4. Use `swap-quote` to get quotes and transaction data
+
+## Base URLs
+
+| Base URL | Auth | Purpose |
+|----------|------|---------|
+| `https://tws.trustwallet.com` | HMAC-SHA256 | Token prices, security, swap quotes, on/off-ramp, market listings, assets |
+
+> **Rate limit:** Free tier is limited to **1 request per second**. Exceeding this returns `429 Too Many Requests`.
+
+## Asset ID Format
+
+Trust Wallet uses a compact asset ID format across all APIs:
+
+- **Native coin**: `c{coinId}` — e.g., `c60` (ETH), `c714` (BNB), `c501` (SOL)
+- **Token**: `c{coinId}_t{contractAddress}` — e.g., `c60_t0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48` (USDC on Ethereum)
+
+The `coinId` follows the [SLIP-44](https://github.com/satoshilabs/slips/blob/master/slip-0044.md) standard.
+
+### Common Coin IDs
+
+| Chain | Coin ID | Symbol |
+|-------|---------|--------|
+| Ethereum | 60 | ETH |
+| BSC | 714 | BNB |
+| Polygon | 966 | MATIC |
+| Solana | 501 | SOL |
+| Bitcoin | 0 | BTC |
+| Arbitrum | 10042221 | ETH |
+| Base | 10008453 | ETH |
+| Optimism | 10000070 | ETH |
+| Avalanche | 10009000 | AVAX |
+| Tron | 195 | TRX |
+
+See the [setup skill](skills/setup/SKILL.md) for the complete list of 100+ supported chains.
+
+## Swap Providers
+
+The Amber aggregator routes through 10+ DEX and bridge providers:
+
+**DEX:** 1inch, KyberSwap, 0x, Jupiter (Solana), THORChain (Bitcoin/UTXO)
+**Bridges:** Stargate, Synapse, Squid Router, Rango, SWFT
+**Internal:** LiquidMesh (Amber's routing engine)
+
+See the [swap-quote skill](skills/swap-quote/SKILL.md) for per-chain provider availability.
+
+## What's NOT Included
+
+These skills document the Trust Wallet agent APIs. The following are out of scope:
+
+- Custom smart contract deployment
+- NFT-specific operations
+
+## License
+
+MIT
