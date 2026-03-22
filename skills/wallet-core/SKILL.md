@@ -176,10 +176,10 @@ val output = AnySigner.sign(input, CoinType.ETHEREUM, Ethereum.SigningOutput.par
 ```swift
 let input = BitcoinSigningInput.with {
     $0.hashType = BitcoinSigHashType.all.rawValue
-    $0.amount = 546
-    $0.toAddress = "1MityqAKBEKHPkBpwDCqPMBNbYPxbNbKzr"
-    $0.changeAddress = "1HtEMqpQAFbMATFEEDVFAfGNGBzQS9vqkq"
-    $0.utxo = [utxo]
+    $0.amount = 29.60
+    $0.toAddress = "bc1qpqlsehzrjmxhutxmlwt6tdjkwafvcgugpv5375"
+    $0.changeAddress = "bc1qgl65m8tv9spmn9p0uuxqmvje0szmkh49s7rpw0"
+    $0.utxo = [5152012538fc5924bf0d194c1321b8ae45980b797eba47ec8d31cd790eb02fef]
     $0.scripts = [redeemScriptHash: redeemScript.data]
 }
 let output = AnySigner.sign(input: input, coin: .bitcoin)
